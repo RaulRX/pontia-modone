@@ -110,5 +110,44 @@ Una vez hecho push de ambas ramas, se han creado las pull request de cada una de
 
 # 5. Simulación y resolución de conflictos
 
+Del anterior ejercicio, teníamos dos Pull request de las ramas **feature/suma** y **feature/resta** pendientes de mergear contra la rama **master**. Para provocar un conflicto y resolverlo, se realizó los siguientes pasos:
+
+1. Mergeo de la pull request de la rama **feature/suma** en la rama **master**
+2. Mergeo de la pull request de la rama **feature/suma** en la rama **master**. Esto provocará un conflicto, dado que el fichero *operations.py* ya fue modificado en la rama **feature/suma**.
+
+##### Mergeo rama feature/suma en main
+![Ejemplo de imagen](./images/ejercicio_5/merged_feature_suma.png)
+
+##### Mergeo de la rama feature/resta en main (conflictos no permiten mergear)
+![Ejemplo de imagen](./images/ejercicio_5/conflicts_merge_feature_resta.png)
+
+Ahora, para mergear la pull request de la rama **feature/resta** se han de resolver los conflictos del repositorio local. Para ello, primero se ha actualizado la rama **master** en local y, después, mergearemos en la rama **feature/resta** la rama **master**
+
+##### Actualización rama master en local
+![Ejemplo de imagen](./images/ejercicio_5/update_master_feature_suma.png)
+
+##### Mergear rama feature/resta contra master y ver conflictos generados
+![Ejemplo de imagen](./images/ejercicio_5/conflicts_to_resolve_feature_resta.png)
+
+Visto los conflictos que se han generado, ahora hay que resolverlos manualmente:
+
+##### Resolución de los conflictos (Dejamos las funciones info, suma y resta)
+![Ejemplo de imagen](./images/ejercicio_5/conflict_solved_feature_resta.png)
+
+Una vez se han solucionado, pushearemos los cambios en la rama **feature/resta**, actualizando la pull request asociada a la rama, y desbloqueando la pull request para poder mergearla contra la rama remota **master**. Una vez se desbloqué la pull request, se procedió a realizar el merged de la pull request contra la rama **master**
+
+##### Push de la resolución de los conflictos
+![Ejemplo de imagen](./images/ejercicio_5/pushed_solved_conflicts.png)
+
+##### Desbloqueo de la pull request para mergear contra la rama master
+![Ejemplo de imagen](./images/ejercicio_5/merged_available_after_conflicts_solved.png)
+
+##### Aprobación y mergeo de la pull request contra la rama master completado
+![Ejemplo de imagen](./images/ejercicio_5/pr_merged_after_conflicts_solved.png)
+
+A continuación, comprobaremos con el comando **git log --oneline --graph --all** el log de git donde veremos la resolución del conflicto
+
+##### Ejecución del comando git log
+![Ejemplo de imagen](./images/ejercicio_5/git_log_conflicts_solved.png)
 
 # 6. Automatización con Github Actions
