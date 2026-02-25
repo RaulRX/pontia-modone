@@ -1,0 +1,19 @@
+name: Workflow demo
+on:
+    workflow_dispatch:
+        inputs:
+            nombre:
+                description: "Añade tu nombre"
+                required: true
+            apellidos:
+                description: "Añade tus apellidos"
+                required: true
+jobs:
+    print:
+        runs-on: ubuntu-latest
+        env:
+            NAME: ${{ github.event.inputs.nombre }}
+            SURNAME: ${{ github.event.inputs.apellidos }}
+        steps:
+            - name: Show_fullname
+              run: echo "$NAME $SURNAME"
