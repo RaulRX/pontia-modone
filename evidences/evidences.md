@@ -4,6 +4,25 @@
 ###### url: https://github.com/RaulRX/pontia-modone.git
 ###### ssh: git@github.com:RaulRX/pontia-modone.git
 
+# Flujo de trabajo, resolución de conflictos y funcionamiento de workflow
+
+En primer lugar, se ha creado el repositorio en github con el nombre pontia-modone. Después, se ha ejecutado el comando **git init** sobre una carpeta local para inicializar el repositorio vacio y, posteriormente, se ha añadido a la configuración de git en local el nuevo reporitorio remoto creado en github con el comando **git remote add origin <repositorio_remoto>**
+
+Una vez hecho esto, se ha creado el primer commit. Después, se ha protegido la rama master contra commits directos para que se deban crear pull request para mergear cambios en la rama principal (incluyendo los administradores)
+
+Una vez protegida la rama **master**, se ha añadido el fichero **.gitignore** para evitar subir ficheros o carpetas innecesarios al repositorio remoto.
+
+Se han creado dos ramas (**feature/suma** y **feature/resta**) con el objetivo de generar un conflicto en un fichero compartido por ambas ramas.
+
+El conflicto se produjo siguiendo los siguientes pasos:
+
+1. La rama **feature/suma** mergeo en la rama **master** el fichero **operations.py** con dos métodos: info y suma
+2. Posteriormente, se quiso mergear nuevos cambios en el fichero **operations.py** desde la rama **feature/resta** a la rama **master**, la cual ya tenia cambios previamente mergeados sobre el mismo fichero.
+
+¿Cómo se resolvió? Desde local, primero se actualizo la rama local **master**. Después, mergeamos la rama **master** contra la rama local **feature/resta** para obtener los conflictos y poder modificar el fichero afectado **operations.py** manualmente, quedándonos con los cambios que nos interesan. Una vez resueltos, pusheamos los cambios de la rama **feature/resta** y, de esta forma, desbloqueamos al pull request creada previamente para mergear los cambios contra la rama **master**
+
+**¿Cómo funciona el workflow de GitHub Actions?** Github, al detectar una acción sobre una rama, busca los archivos yml en la carpeta .github/workflows. Por cada uno de ellos, ejecuta los jobs sobre una máquina definida en el fichero yml y ejecuta los steps definidos en él (primero hace checkout del código, prepara el entorno y ejecuta las acciones dentro del step). Si todos los jobs y steps se ejecutan ok, se marca el workflow como correcto. Si falla algun stepe de algun job, se notifica el error.
+
 # 1. Creación del repositorio y primer commit
 En primer lugar, se ha creado un repositorio remoto en Github con el nombre pontia-modone. Una vez creado, se ha creado una carpeta en local con el nombre del repositorio remoto, y hemos ejecutado el comando **git init** para inicializar el repositorio local con la carpeta .git, donde se recogerá toda la información referente al repositorio remoto. En este momento, se ha creado la rama master (en adelante, la rama *main*)
 
@@ -147,7 +166,64 @@ Una vez se han solucionado, pushearemos los cambios en la rama **feature/resta**
 
 A continuación, comprobaremos con el comando **git log --oneline --graph --all** el log de git donde veremos la resolución del conflicto
 
-##### Ejecución del comando git log
+##### Ejecución del comando git log --oneline --graph --all
+![Ejemplo de imagen](./images/ejercicio_5/git_log_info.png)
+
+##### Fichero git-log.txt con la ejecución del comando git log
 ![Ejemplo de imagen](./images/ejercicio_5/git_log_conflicts_solved.png)
 
+
 # 6. Automatización con Github Actions
+
+En primer lugar, para asegurar que la rama **master** en local esta actualizada contra la rama remota, nos movemos a la rama **master** y ejeuctamos el comando **git pull origin**
+
+Una vez hecho esto, se crea la nueva rama **feature/ci** con el comando **git switch -c feature/ci**. Después, se crea la carpeta **.github**, dentro la subcarpeta **workflow** (ambos con el comando mkdir) y, por último, con el comando **touch**, se crea el fichero **demo.yml** el cual contendrá el workflow que queremos ejecutar
+
+##### Creación rama feature/ci y las carpetas .github/workflow con el fichero demo.yml
+![Ejemplo de imagen](./images/ejercicio_6/branch_featureci_create_workflow.png)
+d
+A continuación, se crea el workflow de tipo dispatch donde será necesario introducir el nombre y apellidos para ejecutarlo. Al ejecutarlo, se mostrará el nombre completo
+
+##### Fichero demo.yml con el workflow generado
+![Ejemplo de imagen](./images/ejercicio_6/workflow_data.png)
+
+Una vez creado el workflow, pusheamos en la rama **feature/ci** el nuevo workflow al repositorio remoto
+
+##### Commit y push de la rama feature/ci
+![Ejemplo de imagen](./images/ejercicio_6/pushed_workflow.png)
+
+Después, creamos la pull request de la rama para mergear los cambios de la rama **feature/ci** en la rama **master**
+
+##### Creación de la pull request de la rama feature/ci
+![Ejemplo de imagen](./images/ejercicio_6/pull%20request%20created.png)
+
+##### Mergeo de la pull request feature/ci contra master
+![Ejemplo de imagen](./images/ejercicio_6/pull%20request%20merged.png)
+
+Al mergear en la rama master, se creará el action creado en el fichero demo.yml
+
+##### Action creado
+![Ejemplo de imagen](./images/ejercicio_6/workflow_created.png)
+
+Como se puede comprobar en la siguiente imagen, el workflow todavía no se ha ejecutado, ya que debemos introducir el nombre y los apellidos
+
+##### Inputs del workflow requeridos
+![Ejemplo de imagen](./images/ejercicio_6/workflow_waiting_to_run.png)
+
+Una vez introducidos los inputs, se ejecutará el workflow
+
+##### Ejecución correcta del workflow
+![Ejemplo de imagen](./images/ejercicio_6/workflow_run_successfully.png)
+
+Ahora, verificamos que la salida de la ejecución es el nombre completo que hemos introducido antes de ejecutar el workflow
+
+##### Salida de la ejecución del workflow
+![Ejemplo de imagen](./images/ejercicio_6/printed_fullname.png)
+
+Finalmente, generaremos un badge para introducir al final de este **README.md** y visualizar su estado cada vez que se ejecute
+
+##### Badge generado y README.md actualizado
+![Ejemplo de imagen](./images/ejercicio_6/status_badged_created.png)
+
+##### Badge generado desde el workflow creado y su estado actual
+ [![Workflow demo](https://github.com/RaulRX/pontia-modone/actions/workflows/demo.yml/badge.svg)](https://github.com/RaulRX/pontia-modone/actions/workflows/demo.yml)
