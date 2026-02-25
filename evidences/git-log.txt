@@ -1,0 +1,23 @@
+*   6a1cdbe Merged main into feature/resta and conflicts solved
+|\  
+| *   a9ed741 Merge pull request #3 from RaulRX/feature/suma
+| |\  
+| | * 0f645b5 Add operationfile
+| |/  
+* / 006dc13 Add operationfile
+|/  
+*   bf6850a Merge pull request #2 from RaulRX/feature/gitignore
+|\  
+| * 9fc6887 gitignore file
+| | * ab28c72 On master: .
+| |/| 
+| | * 60085e4 index on master: 3ae898d Push evidences.md to fail
+| |/  
+| * 3ae898d Push evidences.md to fail
+|/  
+*   2e7631f Merge pull request #1 from RaulRX/RaulRX-patch-1
+|\  
+| * e8d42a8 Delete evidences directory
+|/  
+* ae51042 Push file evidences not allowed
+* 82985f1 First file README.md
